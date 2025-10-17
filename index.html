@@ -19,7 +19,7 @@
   <nav>
     <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
       <a href="#" class="text-gold" style="font-size:2rem; font-weight:bold;">Febias Logia</a>
-      <ul style="display:flex; gap:2rem; list-style:none; margin:0; padding:0;">
+      <ul>
         <li><a href="#search-section">Search Bible</a></li>
         <li><a href="#features-section">Features</a></li>
         <li><a href="#about-section">About</a></li>
@@ -30,104 +30,89 @@
 
   <!-- HERO SECTION -->
   <section class="hero">
-    <div class="container text-center">
+    <div class="container">
       <h1>Febias Logia</h1>
       <p>Explore the Word of God with modern technology. Read, search, and study the Bible like never before.</p>
       <a href="#search-section">Start Reading</a>
     </div>
     <img src="https://images.unsplash.com/photo-1619479313580-4bb1b38c2b6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" 
-         alt="Bible image" style="position:absolute; bottom:0; left:0; width:100%; opacity:0.2; z-index:-10;">
+         alt="Bible image">
   </section>
 
   <!-- SEARCH & TRANSLATION SECTION -->
-  <section id="search-section" class="bg-cream">
-    <div class="container text-center">
-      <h2>Search the Bible</h2>
-      <p>Quickly find verses, chapters, and books in multiple translations.</p>
-
-      <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin:2rem 0;">
-        <select id="translation">
-          <option value="kjv">King James Version (KJV)</option>
-          <option value="web">World English Bible (WEB)</option>
-          <option value="esv">English Standard Version (ESV)</option>
-        </select>
-
-        <input id="search" type="text" placeholder="Search Bible...">
-      </div>
-
-      <div id="verses"></div>
+  <section id="search-section">
+    <h2>Search the Bible</h2>
+    <p>Quickly find verses, chapters, and books in multiple translations.</p>
+    <div class="search-controls">
+      <select id="translation">
+        <option value="kjv">King James Version (KJV)</option>
+        <option value="web">World English Bible (WEB)</option>
+        <option value="esv">English Standard Version (ESV)</option>
+      </select>
+      <input id="search" type="text" placeholder="Search Bible...">
+    </div>
+    <div id="verse-results">
+      <!-- Dynamic verse cards inserted via script.js -->
     </div>
   </section>
 
   <!-- FEATURES SECTION -->
   <section id="features-section">
-    <div class="container text-center">
-      <h2>Features</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <h3>Multiple Translations</h3>
-          <p>Access multiple Bible translations dynamically fetched from GitHub.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Powerful Search</h3>
-          <p>Search by verse text, book, or chapter instantly with live filtering.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Elegant Design</h3>
-          <p>Beautiful green, gold, and white theme inspired by Febias College of Bible.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Responsive Layout</h3>
-          <p>Works perfectly on desktop, tablet, and mobile screens.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Highlight & Study</h3>
-          <p>Highlight verses for deeper study and keep your focus on God’s Word.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Fast & Lightweight</h3>
-          <p>Optimized performance with minimal loading times for a smooth reading experience.</p>
-        </div>
-      </div>
+    <div class="feature-card">
+      <h3>Multiple Translations</h3>
+      <p>Access multiple Bible translations dynamically fetched from GitHub.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Powerful Search</h3>
+      <p>Search by verse text, book, or chapter instantly with live filtering.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Elegant Design</h3>
+      <p>Beautiful green, gold, and white theme inspired by Febias College of Bible.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Responsive Layout</h3>
+      <p>Works perfectly on desktop, tablet, and mobile screens.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Highlight & Study</h3>
+      <p>Highlight verses for deeper study and keep your focus on God’s Word.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Fast & Lightweight</h3>
+      <p>Optimized performance with minimal loading times for a smooth reading experience.</p>
     </div>
   </section>
 
   <!-- ABOUT SECTION -->
-  <section id="about-section" class="bg-green-50">
-    <div class="container text-center">
-      <h2>About Febias Logia</h2>
-      <p>Febias Logia is a modern Bible web application designed to make scripture reading, searching, and studying easier and more elegant than ever. Our mission is to make the Word of God accessible to everyone, anywhere, with multiple translations and a beautiful interface inspired by the colors of faith.</p>
-      <img src="https://images.unsplash.com/photo-1588776814546-38a530ec2b8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="Bible study">
-    </div>
+  <section id="about-section">
+    <h2>About Febias Logia</h2>
+    <p>Febias Logia is a modern Bible web application designed to make scripture reading, searching, and studying easier and more elegant than ever. Our mission is to make the Word of God accessible to everyone, anywhere, with multiple translations and a beautiful interface inspired by the colors of faith.</p>
+    <img src="https://images.unsplash.com/photo-1588776814546-38a530ec2b8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="Bible study">
   </section>
 
   <!-- CONTACT SECTION -->
   <section id="contact-section">
-    <div class="container text-center">
-      <h2>Contact & Feedback</h2>
-      <p>Have suggestions or want to support Febias Logia? Reach out to us!</p>
-      <form>
-        <input type="text" placeholder="Your Name">
-        <input type="email" placeholder="Your Email">
-        <textarea placeholder="Message" rows="5"></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-    </div>
+    <h2>Contact & Feedback</h2>
+    <p>Have suggestions or want to support Febias Logia? Reach out to us!</p>
+    <form>
+      <input type="text" placeholder="Your Name">
+      <input type="email" placeholder="Your Email">
+      <textarea placeholder="Message" rows="5"></textarea>
+      <button type="submit">Send Message</button>
+    </form>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <div class="container" style="display:flex; flex-direction:column; align-items:center; gap:1rem;">
-      <p>&copy; 2025 Febias Logia. All rights reserved.</p>
-      <div style="display:flex; gap:1.5rem;">
-        <a href="#">Facebook</a>
-        <a href="#">Twitter</a>
-        <a href="#">Instagram</a>
-      </div>
+    <p>&copy; 2025 Febias Logia. All rights reserved.</p>
+    <div>
+      <a href="#">Facebook</a>
+      <a href="#">Twitter</a>
+      <a href="#">Instagram</a>
     </div>
   </footer>
 
-  <!-- LINK JAVASCRIPT -->
   <script src="script.js"></script>
 </body>
 </html>
