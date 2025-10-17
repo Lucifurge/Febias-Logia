@@ -8,7 +8,8 @@ let bibleData = [];
 async function fetchBibleData(translation) {
   versesContainer.innerHTML = `<p class="text-green-900/70">Loading ${translation.toUpperCase()}...</p>`;
   try {
-    const response = await fetch(`https://logia-api.onrender.com/${translation}`);
+    // Use API endpoint with query param instead of GitHub raw URLs
+    const response = await fetch(`https://logia-api.onrender.com/bible?translation=${translation}`);
     if (!response.ok) throw new Error("Failed to fetch Bible data from API");
     bibleData = await response.json();
     displayVerses(bibleData);
