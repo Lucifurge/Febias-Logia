@@ -1,0 +1,11 @@
+/* Custom colors */
+.bg-cream { background-color: #fefdf6; }
+.text-gold { color: #bfa14a; }
+.text-green { color: #1d4d1d; }
+.border-gold { border-color: #bfa14a; }
+
+/* Optional hover effects */
+input:focus {
+  border-color: #bfa14a;
+  box-shadow: 0 0 0 2px rgba(191, 161, 74, 0.5);
+}
