@@ -1,23 +1,15 @@
-// Mapping translation keys to raw GitHub JSON URLs
-const TRANSLATION_URLS = {
-  kjv: "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/json/kjv.json",
-  web: "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/json/web.json",
-  esv: "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/json/esv.json"
-};
-
 const searchInput = document.getElementById("search");
 const translationSelect = document.getElementById("translation");
 const versesContainer = document.getElementById("verses");
 
 let bibleData = [];
 
-// Fetch Bible JSON data from GitHub
+// Fetch Bible JSON data from your API
 async function fetchBibleData(translation) {
   versesContainer.innerHTML = `<p class="text-green-900/70">Loading ${translation.toUpperCase()}...</p>`;
   try {
-    const url = TRANSLATION_URLS[translation];
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Failed to fetch Bible data");
+    const response = await fetch(`https://logia-api.onrender.com/${translation}`);
+    if (!response.ok) throw new Error("Failed to fetch Bible data from API");
     bibleData = await response.json();
     displayVerses(bibleData);
   } catch (error) {
@@ -35,7 +27,7 @@ function highlightText(text, term) {
 
 // Display verses in container
 function displayVerses(data, highlight = "") {
-  if (data.length === 0) {
+  if (!data || data.length === 0) {
     versesContainer.innerHTML = `<p class="text-green-900/70">No verses found.</p>`;
     return;
   }
