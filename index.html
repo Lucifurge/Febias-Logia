@@ -12,13 +12,27 @@
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Optional hover animation for logo */
+    nav .logo img {
+      height: 50px;
+      width: auto;
+      transition: transform 0.3s ease;
+    }
+    nav .logo img:hover {
+      transform: rotate(-5deg) scale(1.05);
+    }
+  </style>
 </head>
 <body>
 
   <!-- NAVIGATION -->
   <nav>
     <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
-      <a href="#" class="text-gold" style="font-size:2rem; font-weight:bold;">Febias Logia</a>
+      <a href="#" class="logo">
+        <img src="logia.ico" alt="Febias Logia Logo">
+      </a>
       <ul>
         <li><a href="#search-section">Search Bible</a></li>
         <li><a href="#features-section">Features</a></li>
