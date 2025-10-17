@@ -1,16 +1,22 @@
-// URL of the raw JSON file in the GitHub repository
-// Example: English KJV translation
-const BIBLE_JSON_URL = "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/json/kjv.json";
+// Mapping translation keys to raw GitHub JSON URLs
+const TRANSLATION_URLS = {
+  kjv: "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/json/kjv.json",
+  web: "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/json/web.json",
+  esv: "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/json/esv.json"
+};
 
 const searchInput = document.getElementById("search");
+const translationSelect = document.getElementById("translation");
 const versesContainer = document.getElementById("verses");
 
 let bibleData = [];
 
 // Fetch Bible JSON data from GitHub
-async function fetchBibleData() {
+async function fetchBibleData(translation) {
+  versesContainer.innerHTML = `<p class="text-green-900/70">Loading ${translation.toUpperCase()}...</p>`;
   try {
-    const response = await fetch(BIBLE_JSON_URL);
+    const url = TRANSLATION_URLS[translation];
+    const response = await fetch(url);
     if (!response.ok) throw new Error("Failed to fetch Bible data");
     bibleData = await response.json();
     displayVerses(bibleData);
@@ -20,28 +26,34 @@ async function fetchBibleData() {
   }
 }
 
-// Display verses
+// Display verses in container
 function displayVerses(data) {
-  versesContainer.innerHTML = data.length
-    ? data.map((verse) => `
-        <div class="verse-card p-4 mb-4 rounded shadow-sm bg-cream border border-gold">
-          <p class="font-semibold text-gold">${verse.book} ${verse.chapter}:${verse.verse}</p>
-          <p class="text-green mt-1">${verse.text}</p>
-        </div>
-      `).join("")
-    : `<p class="text-green/70">No verses found.</p>`;
+  if (data.length === 0) {
+    versesContainer.innerHTML = `<p class="text-green-900/70">No verses found.</p>`;
+    return;
+  }
+  versesContainer.innerHTML = data.map((verse, index) => `
+    <div class="verse-card p-4 mb-4 rounded shadow-sm bg-cream border border-gold">
+      <p class="font-semibold text-gold">${verse.book} ${verse.chapter}:${verse.verse}</p>
+      <p class="text-green-900 mt-1">${verse.text}</p>
+    </div>
+  `).join("");
 }
 
-// Search functionality
+// Search filtering
 searchInput.addEventListener("input", (e) => {
   const query = e.target.value.toLowerCase();
   const filtered = bibleData.filter(
-    (verse) =>
-      verse.text.toLowerCase().includes(query) ||
-      verse.book.toLowerCase().includes(query)
+    verse => verse.text.toLowerCase().includes(query) ||
+             verse.book.toLowerCase().includes(query)
   );
   displayVerses(filtered);
 });
 
-// Initialize
-fetchBibleData();
+// Change translation
+translationSelect.addEventListener("change", (e) => {
+  fetchBibleData(e.target.value);
+});
+
+// Initialize with default translation
+fetchBibleData(translationSelect.value);
