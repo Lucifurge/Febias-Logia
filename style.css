@@ -1,47 +1,180 @@
-// URL of the raw JSON file in the GitHub repository
-// Example: English KJV translation
-const BIBLE_JSON_URL = "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/json/kjv.json";
+/* === Custom Fonts === */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap');
 
-const searchInput = document.getElementById("search");
-const versesContainer = document.getElementById("verses");
-
-let bibleData = [];
-
-// Fetch Bible JSON data from GitHub
-async function fetchBibleData() {
-  try {
-    const response = await fetch(BIBLE_JSON_URL);
-    if (!response.ok) throw new Error("Failed to fetch Bible data");
-    bibleData = await response.json();
-    displayVerses(bibleData);
-  } catch (error) {
-    versesContainer.innerHTML = `<p class="text-red-600">Error loading Bible data: ${error.message}</p>`;
-    console.error(error);
-  }
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #1d4d1d; /* Dark Green text */
+    background-color: #ffffff;
 }
 
-// Display verses
-function displayVerses(data) {
-  versesContainer.innerHTML = data.length
-    ? data.map((verse) => `
-        <div class="verse-card p-4 mb-4 rounded shadow-sm bg-cream border border-gold">
-          <p class="font-semibold text-gold">${verse.book} ${verse.chapter}:${verse.verse}</p>
-          <p class="text-green mt-1">${verse.text}</p>
-        </div>
-      `).join("")
-    : `<p class="text-green/70">No verses found.</p>`;
+/* === Custom Colors === */
+.bg-cream {
+    background-color: #fefdf6;
 }
 
-// Search functionality
-searchInput.addEventListener("input", (e) => {
-  const query = e.target.value.toLowerCase();
-  const filtered = bibleData.filter(
-    (verse) =>
-      verse.text.toLowerCase().includes(query) ||
-      verse.book.toLowerCase().includes(query)
-  );
-  displayVerses(filtered);
-});
+.text-gold {
+    color: #bfa14a;
+}
 
-// Initialize
-fetchBibleData();
+.text-green {
+    color: #1d4d1d;
+}
+
+.border-gold {
+    border-color: #bfa14a;
+}
+
+.bg-gold {
+    background-color: #bfa14a;
+}
+
+/* === Buttons === */
+button {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(191, 161, 74, 0.4);
+}
+
+/* === Inputs & Select === */
+input, select, textarea {
+    border: 2px solid #bfa14a;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #bfa14a;
+    box-shadow: 0 0 0 3px rgba(191, 161, 74, 0.3);
+}
+
+/* === Headers === */
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+/* === Hero Section === */
+section.relative h1 {
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* === Verse Cards === */
+#verses > div {
+    background-color: #fefdf6;
+    border: 2px solid #bfa14a;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#verses > div:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Verse Book & Chapter */
+#verses p:first-child {
+    font-weight: 700;
+    color: #bfa14a;
+}
+
+/* Verse Text */
+#verses p:last-child {
+    color: #1d4d1d;
+}
+
+/* === Features Section === */
+section#features-section h3 {
+    color: #bfa14a;
+}
+
+section#features-section p {
+    color: #1d4d1d;
+}
+
+/* Feature Card Hover Effect */
+section#features-section > div > div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(191,161,74,0.3);
+}
+
+/* === About Section === */
+section#about-section img {
+    max-width: 100%;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* === Contact Form === */
+form input, form textarea {
+    width: 100%;
+    margin-bottom: 0.75rem;
+}
+
+/* Submit Button */
+form button {
+    background-color: #bfa14a;
+    color: #1d4d1d;
+    font-weight: 600;
+}
+
+/* Hover for contact button */
+form button:hover {
+    background-color: #d1b24f;
+    box-shadow: 0 6px 20px rgba(191,161,74,0.5);
+}
+
+/* === Footer === */
+footer a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: #bfa14a;
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    h2 {
+        font-size: 2rem;
+    }
+    section#search-section input, section#search-section select {
+        width: 100%;
+    }
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+}
