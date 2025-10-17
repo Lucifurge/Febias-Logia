@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Display verses in container
   function displayVerses(data, highlight = "") {
-    if (!versesContainer) return; // safety check
+    if (!versesContainer) return;
     if (!data || data.length === 0) {
       versesContainer.innerHTML = `<p class="text-green-900/70">No verses found.</p>`;
       return;
@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `).join("");
 
-    // Add click listener for opening verse modal
     document.querySelectorAll(".verse-card").forEach(card => {
       card.addEventListener("click", () => {
         const idx = card.getAttribute("data-index");
@@ -54,11 +53,36 @@ document.addEventListener("DOMContentLoaded", () => {
   // Search filtering
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
-      const query = e.target.value.toLowerCase();
-      const filtered = bibleData.filter(
-        verse => verse.text.toLowerCase().includes(query) ||
-                 verse.book.toLowerCase().includes(query)
+      const query = e.target.value.toLowerCase().trim();
+
+      if (!query) {
+        displayVerses(bibleData);
+        return;
+      }
+
+      // Check if user typed a specific verse reference like "Romans 3:23"
+      const referenceMatch = query.match(/^([a-z\s]+)\s+(\d+):(\d+)$/i);
+      if (referenceMatch) {
+        const bookQuery = referenceMatch[1].trim();
+        const chapterQuery = parseInt(referenceMatch[2], 10);
+        const verseQuery = parseInt(referenceMatch[3], 10);
+
+        const filtered = bibleData.filter(verse =>
+          verse.book.toLowerCase() === bookQuery &&
+          verse.chapter === chapterQuery &&
+          verse.verse === verseQuery
+        );
+
+        displayVerses(filtered, query);
+        return;
+      }
+
+      // Otherwise filter by book name or text content
+      const filtered = bibleData.filter(verse =>
+        verse.book.toLowerCase().startsWith(query) ||
+        verse.text.toLowerCase().includes(query)
       );
+
       displayVerses(filtered, query);
     });
   }
