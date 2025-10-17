@@ -7,13 +7,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Fetch Bible JSON data from your API
   async function fetchBibleData(translation) {
-    if (!versesContainer) return; // safety check
+    if (!versesContainer) return;
     versesContainer.innerHTML = `<p class="text-green-900/70">Loading ${translation.toUpperCase()}...</p>`;
     try {
       const response = await fetch(`https://logia-api.onrender.com/bible?translation=${translation}`);
       if (!response.ok) throw new Error("Failed to fetch Bible data from API");
       bibleData = await response.json();
-      displayVerses(bibleData);
+      displayVerses(bibleData); // initially show all
     } catch (error) {
       versesContainer.innerHTML = `<p class="text-red-600">Error loading Bible data: ${error.message}</p>`;
       console.error(error);
@@ -27,14 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
     return text.replace(regex, '<span class="bg-gold/30">$1</span>');
   }
 
-  // Display verses in container
+  // Display verses
   function displayVerses(data, highlight = "") {
     if (!versesContainer) return;
     if (!data || data.length === 0) {
       versesContainer.innerHTML = `<p class="text-green-900/70">No verses found.</p>`;
       return;
     }
-
     versesContainer.innerHTML = data.map((verse, index) => `
       <div class="verse-card p-4 mb-4 rounded shadow-sm bg-cream border border-gold cursor-pointer transition hover:shadow-lg" data-index="${index}">
         <p class="font-semibold text-gold">${verse.book} ${verse.chapter}:${verse.verse}</p>
@@ -50,54 +49,55 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Search filtering
+  // Search function (book name, chapter, or specific verse)
+  function searchBible(query) {
+    query = query.toLowerCase().trim();
+    if (!query) {
+      displayVerses(bibleData);
+      return;
+    }
+
+    // Specific verse format: "Romans 3:23"
+    const verseMatch = query.match(/^([a-z\s]+)\s+(\d+):(\d+)$/i);
+    if (verseMatch) {
+      const book = verseMatch[1].trim();
+      const chapter = parseInt(verseMatch[2], 10);
+      const verseNum = parseInt(verseMatch[3], 10);
+      const result = bibleData.filter(v => v.book.toLowerCase() === book && v.chapter === chapter && v.verse === verseNum);
+      displayVerses(result, query);
+      return;
+    }
+
+    // Chapter format: "Romans 3"
+    const chapterMatch = query.match(/^([a-z\s]+)\s+(\d+)$/i);
+    if (chapterMatch) {
+      const book = chapterMatch[1].trim();
+      const chapter = parseInt(chapterMatch[2], 10);
+      const result = bibleData.filter(v => v.book.toLowerCase() === book && v.chapter === chapter);
+      displayVerses(result, query);
+      return;
+    }
+
+    // Otherwise treat as book name or text search
+    const result = bibleData.filter(v => v.book.toLowerCase().startsWith(query) || v.text.toLowerCase().includes(query));
+    displayVerses(result, query);
+  }
+
+  // Event listeners
   if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      const query = e.target.value.toLowerCase().trim();
-
-      if (!query) {
-        displayVerses(bibleData);
-        return;
-      }
-
-      // Check if user typed a specific verse reference like "Romans 3:23"
-      const referenceMatch = query.match(/^([a-z\s]+)\s+(\d+):(\d+)$/i);
-      if (referenceMatch) {
-        const bookQuery = referenceMatch[1].trim();
-        const chapterQuery = parseInt(referenceMatch[2], 10);
-        const verseQuery = parseInt(referenceMatch[3], 10);
-
-        const filtered = bibleData.filter(verse =>
-          verse.book.toLowerCase() === bookQuery &&
-          verse.chapter === chapterQuery &&
-          verse.verse === verseQuery
-        );
-
-        displayVerses(filtered, query);
-        return;
-      }
-
-      // Otherwise filter by book name or text content
-      const filtered = bibleData.filter(verse =>
-        verse.book.toLowerCase().startsWith(query) ||
-        verse.text.toLowerCase().includes(query)
-      );
-
-      displayVerses(filtered, query);
+    searchInput.addEventListener("input", (e) => searchBible(e.target.value));
+    searchInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") searchBible(e.target.value);
     });
   }
 
-  // Change translation
   if (translationSelect) {
-    translationSelect.addEventListener("change", (e) => {
-      fetchBibleData(e.target.value);
-    });
+    translationSelect.addEventListener("change", (e) => fetchBibleData(e.target.value));
   }
 
-  // Initialize with default translation
   if (translationSelect) fetchBibleData(translationSelect.value);
 
-  // === Modal for individual verse view ===
+  // Modal
   const modal = document.createElement("div");
   modal.id = "verse-modal";
   modal.className = "fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden";
@@ -124,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (closeModalBtn) closeModalBtn.addEventListener("click", () => modal.classList.add("hidden"));
   modal.addEventListener("click", (e) => { if(e.target === modal) modal.classList.add("hidden"); });
-
   if (copyVerseBtn) copyVerseBtn.addEventListener("click", () => {
     navigator.clipboard.writeText(`${modalReference.textContent} - ${modalText.textContent}`);
     copyVerseBtn.textContent = "Copied!";
